@@ -17,8 +17,9 @@
     </organization>
 
     <properties>
-        <vaadin.version>14.7.8</vaadin.version>
-        <flow.version>2.7.6</flow.version>
+        <vaadin.version>23.3.2</vaadin.version>
+        <flow.version>23.3.2</flow.version>
+        <flow.helpers.version>9.0.24</flow.helpers.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,7 +64,7 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>flow-component-demo-helpers</artifactId>
-            <version>${flow.version}</version>
+            <version>${flow.helpers.version}</version>
         </dependency>
 
         <!-- externals -->
