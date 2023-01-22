@@ -62,6 +62,9 @@ window.vcfsplide = {
 		// disable video on thumbnail
 		thumbnails.Components.Video.disable(true);
 
+		// disable video on main while it's not a full screen
+		main.Components.Video.disable(true);
+
 		// create bar for close button on full screen
 		const bar = document.createElement('div');
 		bar.id = "lightbox-bar-" + container.id;
@@ -99,6 +102,7 @@ window.vcfsplide = {
 		container.main.options = {
 			height: container.clientHeight - container.thumbnails.options.fixedHeight - bar.clientHeight - 50,
 		};
+		container.main.Components.Video.disable(false);
 		
 		// define behavior on full screen close button click
 		const closeLightbox = () => {
@@ -109,6 +113,8 @@ window.vcfsplide = {
 			container.main.options = {
 				height: mainOriginalHeight,
 			};
+			container.main.Components.Video.pause();
+			container.main.Components.Video.disable(true);
 			container.$server.onCloseFullScreenMode();
         };
 

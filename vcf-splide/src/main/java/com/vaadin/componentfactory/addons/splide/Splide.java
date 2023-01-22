@@ -100,27 +100,21 @@ public class Splide extends Div {
     divTrack.appendChild(ulList);
     
     for (Slide slide : slides) {
-      
-      if(slide instanceof ImageSlide) {
-        ImageSlide imageSlide = (ImageSlide)slide;        
-        ListItem liSlide = createImageItem(imageSlide);      
-        liSlide.getElement().addEventListener(
-          "click",
-          e -> {
-              JsonValue detail = e.getEventData().get("event.detail");
-              if (detail.asNumber() > 1 || fullScreen) {
-                  // do nothing, just ignore
-              } else {
-                this.displayFullScreenMode();
-              }
-          }
-        ).addEventData("event.detail");
-        ulList.appendChild(liSlide.getElement());  
-      } else {
-        VideoSlide videoSlide = (VideoSlide)slide;
-        ListItem liSlide = createVideoItem(videoSlide);
-        ulList.appendChild(liSlide.getElement());  
-      }  
+
+      ListItem liSlide = createListItem(slide);
+      ulList.appendChild(liSlide.getElement());
+
+      liSlide.getElement().addEventListener(
+        "click",
+        e -> {
+            JsonValue detail = e.getEventData().get("event.detail");
+            if (detail.asNumber() > 1 || fullScreen) {
+                // do nothing, just ignore
+            } else {
+              this.displayFullScreenMode();
+            }
+        }
+      ).addEventData("event.detail");
     }
     return slidesDiv;
   }
@@ -152,18 +146,23 @@ public class Splide extends Div {
     
     divTrack.appendChild(ulList);
     
-    for (Slide slide : slides) {      
-      if(slide instanceof ImageSlide) {
-        ImageSlide imageSlide = (ImageSlide)slide;   
-        ListItem liSlide = createImageItem(imageSlide);
-        ulList.appendChild(liSlide.getElement());        
-      } else {
-        VideoSlide videoSlide = (VideoSlide)slide;
-        ListItem liSlide = createVideoItem(videoSlide);
-        ulList.appendChild(liSlide.getElement());           
-      }
-    }        
+    for (Slide slide : slides) {
+      ListItem liSlide = createListItem(slide);
+      ulList.appendChild(liSlide.getElement());
+    }
     return thumbnailsDiv;
+  }
+
+  private ListItem createListItem(Slide slide) {
+    if(slide instanceof ImageSlide) {
+      return createImageItem((ImageSlide)slide);
+    } else
+    if(slide instanceof VideoSlide) {
+      return createVideoItem((VideoSlide)slide);
+    }
+    else {
+      return createImageItem(new ImageSlide(""));
+    }
   }
   
   private ListItem createImageItem(ImageSlide imageSlide) {
@@ -238,7 +237,7 @@ public class Splide extends Div {
   }
   
   private void addSlideElement(Slide slide) {
-    ListItem liSlide = slide instanceof ImageSlide ? createImageItem((ImageSlide)slide) : createVideoItem((VideoSlide)slide);
+    ListItem liSlide = createListItem(slide);
     this.getElement().executeJs("vcfsplide.addSlide($0,$1)", this, liSlide.getElement().toString()); 
   }
   
